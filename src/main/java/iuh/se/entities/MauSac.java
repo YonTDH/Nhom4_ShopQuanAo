@@ -1,8 +1,20 @@
 package iuh.se.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity // Đánh dấu đây là một thực thể JPA
+@Table(name = "MauSac") // Ánh xạ tới bảng MauSac trong CSDL
 public class MauSac {
-	private String maMauSac;
-	private String mauSac;
+
+    @Id // Đánh dấu cột khóa chính
+    @Column(name = "maMauSac", nullable = false, length = 10) // Ánh xạ tới cột maMauSac
+    private String maMauSac;
+
+    @Column(name = "mauSac", nullable = false, length = 50) // Ánh xạ tới cột mauSac
+    private String mauSac;
 
 	public MauSac() {
 	}

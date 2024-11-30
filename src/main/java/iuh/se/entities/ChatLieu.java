@@ -1,9 +1,20 @@
 package iuh.se.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "ChatLieu") // Ánh xạ lớp này tới bảng "ChatLieu" trong cơ sở dữ liệu
 public class ChatLieu {
-	private String maChatLieu;
-	private String chatLieu;
+
+    @Id
+    @Column(name = "maChatLieu", nullable = false, length = 10) // Khóa chính
+    private String maChatLieu;
+
+    @Column(name = "chatLieu", nullable = false, length = 50) // Tên chất liệu
+    private String chatLieu;
 
 	public ChatLieu() {
 	}

@@ -2,12 +2,30 @@ package iuh.se.entities;
 
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "NhaCungCap") // Ánh xạ lớp tới bảng "NhaCungCap" trong cơ sở dữ liệu
 public class NhaCungCap {
-	private String maNCC;
-	private String tenNCC;
-	private String soDienThoai;
-	private String diaChi;
-	private String email;
+
+    @Id
+    @Column(name = "maNCC", nullable = false, length = 10) // Khóa chính
+    private String maNCC;
+
+    @Column(name = "tenNCC", nullable = false, length = 100) // Tên nhà cung cấp
+    private String tenNCC;
+
+    @Column(name = "soDienThoai", nullable = false, length = 15) // Số điện thoại
+    private String soDienThoai;
+
+    @Column(name = "diaChi", nullable = false, length = 200) // Địa chỉ
+    private String diaChi;
+
+    @Column(name = "email", nullable = true, length = 100) // Email (có thể null)
+    private String email;
 	
 //	public String auto_ID(){
 //	    DAO_NhaCungCap nhaCungCap_DAO = new DAO_NhaCungCap();

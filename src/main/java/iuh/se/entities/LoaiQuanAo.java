@@ -1,8 +1,20 @@
 package iuh.se.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "LoaiQuanAo") // Ánh xạ lớp tới bảng "LoaiQuanAo" trong cơ sở dữ liệu
 public class LoaiQuanAo {
-	private String maLoai;
-	private String loai;
+
+    @Id
+    @Column(name = "maLoai", nullable = false, length = 10) // Khóa chính
+    private String maLoai;
+
+    @Column(name = "loai", nullable = false, length = 50) // Thuộc tính loại quần áo
+    private String loai;
 
 	public LoaiQuanAo() {
 	}

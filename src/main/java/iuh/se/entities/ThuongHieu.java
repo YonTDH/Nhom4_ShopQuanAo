@@ -1,9 +1,20 @@
 package iuh.se.entities;
 
-public class ThuongHieu {
-	private String maThuongHieu;
-	private String thuongHieu;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "ThuongHieu") // Ánh xạ lớp này tới bảng "ThuongHieu" trong CSDL
+public class ThuongHieu {
+
+    @Id
+    @Column(name = "maThuongHieu", nullable = false, length = 10) // Khóa chính
+    private String maThuongHieu;
+
+    @Column(name = "thuongHieu", nullable = false, length = 50) // Tên thương hiệu
+    private String thuongHieu;
 	public ThuongHieu() {
 	}
 //private String auto_ID(){

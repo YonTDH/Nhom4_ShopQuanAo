@@ -1,20 +1,66 @@
 package iuh.se.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class QuanAo {
-	private String maQuanAo;
-	private String tenQuanAo;
-	private String hinhAnh;
-	private MauSac e_MauSac;
-	private int soLuong;
-	private ThuongHieu e_ThuongHieu;
-	private ChatLieu e_ChatLieu;
-	private KichCo e_KichCo;
-	private LoaiQuanAo e_LoaiQuanAo;
-	private NhaCungCap e_NhaCungCap;
-	private double donGiaBan;
-	private KhuyenMai e_KhuyenMai;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "QuanAo")
+public class QuanAo implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
+    @Column(name = "MAQUANAO", length = 8, nullable = false)
+    private String maQuanAo;
+
+    @Column(name = "TENQUANAO", length = 50, nullable = false)
+    private String tenQuanAo;
+
+    @Column(name = "HINHANH", length = 100, nullable = false)
+    private String hinhAnh;
+
+    @ManyToOne
+    @JoinColumn(name = "MAMAUSAC", nullable = false)
+    private MauSac e_MauSac;
+
+    @Column(name = "SOLUONG", nullable = false)
+    private int soLuong;
+
+    @ManyToOne
+    @JoinColumn(name = "MATHUONGHIEU", nullable = false)
+    private ThuongHieu e_ThuongHieu;
+
+    @ManyToOne
+    @JoinColumn(name = "MACHATLIEU", nullable = false)
+    private ChatLieu e_ChatLieu;
+
+    @ManyToOne
+    @JoinColumn(name = "MAKICHCO", nullable = false)
+    private KichCo e_KichCo;
+
+    @ManyToOne
+    @JoinColumn(name = "MALOAI", nullable = false)
+    private LoaiQuanAo e_LoaiQuanAo;
+
+    @ManyToOne
+    @JoinColumn(name = "MANCC", nullable = false)
+    private NhaCungCap e_NhaCungCap;
+
+    @Column(name = "DONGIABAN", nullable = false)
+    private double donGiaBan;
+
+    @ManyToOne
+    @JoinColumn(name = "MAKM", nullable = false)
+    private KhuyenMai e_KhuyenMai;
 
 	public QuanAo() {
 		super();

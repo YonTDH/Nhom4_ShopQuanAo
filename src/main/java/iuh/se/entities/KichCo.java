@@ -1,8 +1,20 @@
 package iuh.se.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "KichCo") // Ánh xạ lớp này tới bảng "KichCo" trong cơ sở dữ liệu
 public class KichCo {
-	private String maKichCo;
-	private String kichCo;
+
+    @Id
+    @Column(name = "maKichCo", nullable = false, length = 10) // Khóa chính
+    private String maKichCo;
+
+    @Column(name = "kichCo", nullable = false, length = 50) // Thuộc tính kích cỡ
+    private String kichCo;
 
 	public KichCo() {
 	}
