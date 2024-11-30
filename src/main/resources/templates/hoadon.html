@@ -78,7 +78,7 @@
 											<input type="hidden" name="hoaDonId"
 												th:value="${hoaDon.maHD}"> <input type="hidden"
 												name="sanPhamId" th:value="${product.maQuanAo}">
-											<button type="submit" class="btn btn-primary">Thêm</button>
+											<button type="button" class="btn btn-primary" onclick="addProduct(this)">Thêm</button>
 										</form>
 									</td>
 								</tr>
@@ -86,36 +86,36 @@
 						</table>
 					</form>
 				</div>
-		<h4 class="text-center mb-3">Danh Sách Sản Phẩm Đã Thêm</h4>
-<div class="table-responsive">
-    <table class="table table-hover shadow-sm" id="productTable">
-        <thead class="table-success">
-            <tr>
-                <th>Mã Quần Áo</th>
-                <th>Tên Quần Áo</th>
-                <th>Số Lượng</th>
-                <th>Đơn Giá</th>
-                <th>Thành Tiền</th>
-                <th>Thao Tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Các sản phẩm đã thêm vào hóa đơn sẽ được hiển thị ở đây -->
-            <tr th:each="addedProduct : ${addedProducts}">
-                <td th:text="${addedProduct.maQuanAo}"></td>
-                <td th:text="${addedProduct.tenQuanAo}"></td>
-                <td>
-                    <input type="number" name="soLuong" value="1" class="form-control" min="1" style="width: 80px;">
-                </td>
-                <td th:text="${addedProduct.donGiaBan}"></td>
-                <td th:text="${addedProduct.soLuong * addedProduct.donGiaBan}"></td>
-                <td>
-                    <button class="btn btn-danger" onclick="removeProduct('${addedProduct.maQuanAo}')">Xóa</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+				<h4 class="text-center mb-3">Danh Sách Sản Phẩm Đã Thêm</h4>
+				<div class="table-responsive">
+					<table class="table table-hover shadow-sm" id="productTable">
+						<thead class="table-success">
+							<tr>
+								<th>Mã Quần Áo</th>
+								<th>Tên Quần Áo</th>
+								<th>Số Lượng</th>
+								<th>Đơn Giá</th>
+								<th>Thành Tiền</th>
+								<th>Thao Tác</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- Các sản phẩm đã thêm vào hóa đơn sẽ được hiển thị ở đây -->
+							<tr th:each="addedProduct : ${addedProducts}">
+								<td th:text="${addedProduct.maQuanAo}"></td>
+								<td th:text="${addedProduct.tenQuanAo}"></td>
+								<td><input type="number" name="soLuong" value="1"
+									class="form-control" min="1" style="width: 80px;"></td>
+								<td th:text="${addedProduct.donGiaBan*1.0}"></td>
+								<td th:text="${addedProduct.soLuong * addedProduct.donGiaBan}"></td>
+								<td>
+									<button class="btn btn-danger"
+										onclick="removeProduct('${addedProduct.maQuanAo}')">Xóa</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
 
 
@@ -125,13 +125,13 @@
 						<div class="d-flex justify-content-between">
 							<h5>Tổng Tiền:</h5>
 							<h5>
-								<span id="totalAmount">300,000</span> VND
+								$<span id="totalAmount">0</span>
 							</h5>
 						</div>
-						<a href="/hoadon/success" class="btn btn-success w-100">Thanh
-							Toán</a>
+						<button id="payButton" class="btn btn-success w-100">Thanh Toán</button>
 					</div>
 				</div>
+
 			</div>
 		</div>
 	</div>
@@ -140,50 +140,136 @@
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 		<script>
-    function addProductToInvoice(sanPhamId, hoaDonId, soLuong) {
-        // Gửi yêu cầu AJAX
-        $.ajax({
-            type: 'POST',
-            url: '/hoadon/addproduct',
-            data: {
-                hoaDonId: hoaDonId,
-                sanPhamId: sanPhamId,
-                soLuong: soLuong
-            },
-            success: function(response) {
-                // Cập nhật lại danh sách sản phẩm đã thêm
-                updateProductTable(response);
-            },
-            error: function(xhr, status, error) {
-                alert("Có lỗi xảy ra khi thêm sản phẩm.");
-            }
-        });
-    }
+	    // Track added products
+	    let addedProducts = [];
+	
+	    // Function to format currency
+	    function formatCurrency(amount) {
+	        return new Intl.NumberFormat('vi-VN').format(amount);
+	    }
+	
+	    // Function to add product to the table
+	    function addProduct(button) {
+	        const row = button.closest('tr');
+	        const product = {
+	            maQuanAo: row.cells[0].textContent,
+	            tenQuanAo: row.cells[1].textContent,
+	            soLuongTon: parseInt(row.cells[2].textContent),
+	            donGia: parseFloat(row.cells[3].textContent),
+	            soLuong: 1
+	        };
+	
+	        const existingProduct = addedProducts.find(p => p.maQuanAo === product.maQuanAo);
+	        if (existingProduct) {
+	            if (existingProduct.soLuong < product.soLuongTon) {
+	                existingProduct.soLuong++;
+	                updateProductTable();
+	            } else {
+	                alert('Số lượng vượt quá tồn kho!');
+	            }
+	            return;
+	        }
+	
+	        addedProducts.push(product);
+	        updateProductTable();
+	    }
+	
+	    // Function to update the product table
+	    function updateProductTable() {
+	        const tbody = document.querySelector('#productTable tbody');
+	        tbody.innerHTML = '';
+	        
+	        let totalAmount = 0;
+	        addedProducts.forEach(product => {
+	            const thanhTien = 1.0* product.soLuong * product.donGia;
+	            totalAmount += thanhTien;
+	
+	            const tr = document.createElement('tr');
+	            tr.innerHTML = `
+	                <td>${product.maQuanAo}</td>
+	                <td>${product.tenQuanAo}</td>
+	                <td>
+	                    <input type="number" 
+	                           value="${product.soLuong}" 
+	                           min="1" 
+	                           max="${product.soLuongTon}"
+	                           class="form-control" 
+	                           style="width: 80px"
+	                           onchange="updateQuantity('${product.maQuanAo}', this.value)">
+	                </td>
+	                <td>${formatCurrency(product.donGia)}</td>
+	                <td>${formatCurrency(thanhTien)}</td>
+	                <td>
+	                    <button class="btn btn-danger" onclick="removeProduct('${product.maQuanAo}')">Xóa</button>
+	                </td>
+	            `;
+	            tbody.appendChild(tr);
+	        });
+	
+	        document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
+	    }
+	
+	    // Function to update quantity
+	    function updateQuantity(maQuanAo, newQuantity) {
+	        const product = addedProducts.find(p => p.maQuanAo === maQuanAo);
+	        if (product) {
+	            newQuantity = parseInt(newQuantity);
+	            if (newQuantity > product.soLuongTon) {
+	                alert('Số lượng vượt quá tồn kho!');
+	                updateProductTable();
+	                return;
+	            }
+	            if (newQuantity < 1) {
+	                removeProduct(maQuanAo);
+	                return;
+	            }
+	            product.soLuong = newQuantity;
+	            updateProductTable();
+	        }
+	    }
+	
+	    // Function to remove product
+	    function removeProduct(maQuanAo) {
+	        addedProducts = addedProducts.filter(p => p.maQuanAo !== maQuanAo);
+	        updateProductTable();
+	    }
+	
+	    // Function to handle the payment and send data to the server
+	    function handlePayment() {
+	        const hoaDonData = {
+	            maKH: document.querySelector("select[name='khachHang.maKH']").value,
+	            maNV: document.querySelector("select[name='nhanVien.maNV']").value,
+	            products: addedProducts.map(p => ({
+	                maQuanAo: p.maQuanAo,
+	                soLuong: p.soLuong,
+	                donGia: p.donGia
+	            })),
+	            tongTien: parseFloat(document.getElementById('totalAmount').textContent.replace(',', ''))
+	        };
+	
+	        fetch('/hoadon/save', {
+	            method: 'POST',
+	            headers: { 'Content-Type': 'application/json' },
+	            body: JSON.stringify(hoaDonData)
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.message) {
+	                alert(data.message);
+	                window.location.href = '/hoadon/list';  
+	            } else {
+	                alert(data.error || "Lỗi hệ thống");
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Error:', error);
+	            alert('Có lỗi xảy ra, vui lòng thử lại.');
+	        });
+	    }
+	
+	    // Attach event listener to the payment button
+	    document.getElementById('payButton').addEventListener('click', handlePayment);
+	</script>
 
-    function updateProductTable(addedProducts) {
-        // Cập nhật bảng sản phẩm đã thêm
-        let tableBody = $('#productTable tbody');
-        tableBody.empty();  // Xóa dữ liệu cũ
-
-        // Duyệt qua danh sách các sản phẩm đã thêm và thêm vào bảng
-        addedProducts.forEach(function(product) {
-            tableBody.append(`
-                <tr>
-                    <td>${product.maQuanAo}</td>
-                    <td>${product.tenQuanAo}</td>
-                    <td>
-                        <input type="number" name="soLuong" value="${product.soLuong}" class="form-control" min="1" style="width: 80px;">
-                    </td>
-                    <td>${product.donGiaBan}</td>
-                    <td>${product.soLuong * product.donGiaBan}</td>
-                    <td>
-                        <button class="btn btn-danger" onclick="removeProduct('${product.maQuanAo}')">Xóa</button>
-                    </td>
-                </tr>
-            `);
-        });
-    }
-</script>
-		
 </body>
 </html>

@@ -23,7 +23,15 @@ public class ChiTietHoaDon {
     
     
     
-    public ChiTietHoaDon() {
+    public String getMaCTHD() {
+		return maCTHD;
+	}
+
+	public void setMaCTHD(String maCTHD) {
+		this.maCTHD = maCTHD;
+	}
+
+	public ChiTietHoaDon() {
         super();
     }
 

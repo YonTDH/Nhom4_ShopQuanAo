@@ -19,6 +19,5 @@ public interface QuanAoService {
     
     void updateSoLuong(String maQuanAo);
     
-    
      
 }
