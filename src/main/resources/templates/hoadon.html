@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lập Hóa Đơn</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Lập Hóa Đơn</h2>
+        
+        <div class="row">
+            <!-- Form Tạo Hóa Đơn -->
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Thông Tin Hóa Đơn</h5>
+                        <form th:action="@{/hoadon/create}" th:object="${hoaDon}" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Nhân Viên:</label>
+                                <input type="text" th:field="*{nhanVien.tenNhanVien}" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Khách Hàng:</label>
+                                <select th:field="*{khachHang.maKhachHang}" class="form-control">
+                                    <option value="">Chọn khách hàng</option>
+                                    <!-- Options khách hàng sẽ được thêm ở đây -->
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Tổng Tiền:</label>
+                                <input type="number" th:field="*{tongTien}" class="form-control" readonly>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Lập Hóa Đơn</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Danh Sách Sản Phẩm -->
+            <div class="col-md-8">
+                <div class="table-responsive">
+                    <table class="table table-hover shadow-sm">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Mã Quần Áo</th>
+                                <th>Tên Quần Áo</th>
+                                <th>Số Lượng</th>
+                                <th>Đơn Giá</th>
+                                <th>Thành Tiền</th>
+                                <th>Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Các sản phẩm sẽ được thêm động tại đây -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

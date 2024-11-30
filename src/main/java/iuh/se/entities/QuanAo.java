@@ -66,19 +66,11 @@ public class QuanAo implements Serializable {
 		super();
 	}
 
-//	public String auto_ID() {
-//		DAO_QuanAo DAO_quanAo = new DAO_QuanAo();
-//		String idPrefix = "QA";
-//		int length = DAO_quanAo.getAllQuanAo().size();
-//		String finalId = idPrefix + String.format("%06d", length + 1);
-//		return finalId;
-//	}
 
 	public QuanAo(String tenQuanAo, String hinhAnh, MauSac e_MauSac, int soLuong, ThuongHieu e_ThuongHieu,
 			ChatLieu e_ChatLieu, KichCo e_KichCo, LoaiQuanAo e_LoaiQuanAo, NhaCungCap e_NhaCungCap, double donGiaBan,
 			KhuyenMai e_KhuyenMai) {
 		super();
-//		this.maQuanAo = auto_ID();
 		this.tenQuanAo = tenQuanAo;
 		this.hinhAnh = hinhAnh;
 		this.e_MauSac = e_MauSac;

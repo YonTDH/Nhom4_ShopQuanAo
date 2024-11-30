@@ -27,13 +27,6 @@ public class NhaCungCap {
     @Column(name = "email", nullable = true, length = 100) // Email (có thể null)
     private String email;
 	
-//	public String auto_ID(){
-//	    DAO_NhaCungCap nhaCungCap_DAO = new DAO_NhaCungCap();
-//	     String idPrefix = "NCC";
-//	    int length = nhaCungCap_DAO.getAllNCC().size();
-//	    String finalId = idPrefix + String.format("%05d", length + 1);
-//	    return finalId;
-//	}
 	public NhaCungCap() {
 		super();
 		// TODO Auto-generated constructor stub

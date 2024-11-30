@@ -9,7 +9,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-//import dao.DAO_KhuyenMai;
 
 
 @Entity
@@ -30,25 +29,16 @@ public class KhuyenMai {
 
     @Column(name = "mucGiamGia", nullable = false) // Mức giảm giá không được null
     private Double mucGiamGia;
-	
-//	private String auto_ID(){
-//       DAO_KhuyenMai dao_khuyenMai = new DAO_KhuyenMai();
-//       String idPrefix = "KM";
-//       int length = dao_khuyenMai.getAllKhuyenMai().size();
-//       String finalId = idPrefix + String.format("%06d", length + 1);
-//       return finalId;
-//   }
-	
+
 
 	public KhuyenMai() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 
 	public KhuyenMai( Date ngayBatDau, Date ngayKetThuc, Double mucGiamGia) {
 		super();
-//		this.maKM = auto_ID();
+
 		this.ngayBatDau = ngayBatDau;
 		this.ngayKetThuc = ngayKetThuc;
 		this.mucGiamGia = mucGiamGia;

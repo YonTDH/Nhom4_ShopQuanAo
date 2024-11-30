@@ -1,99 +1,135 @@
 package iuh.se.entities;
 
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
+@Entity
 public class NhanVien {
-	private String maNV;
-	private String tenNV;
-	private Date ngaySinh;
-	private boolean gioiTinh;
-	private String sDT;
-	private String diaChi;
-	private String email;
 
-	public NhanVien() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String maNV;
 
-	public NhanVien(String maNV, String tenNV, Date ngaySinh, boolean gioiTinh, String sDT, String diaChi,
-			String email) {
-		super();
-		this.maNV = maNV;
-		this.tenNV = tenNV;
-		this.ngaySinh = ngaySinh;
-		this.gioiTinh = gioiTinh;
-		this.sDT = sDT;
-		this.diaChi = diaChi;
-		this.email = email;
-	}
+    private String tenNV;
 
-	public String getMaNV() {
-		return maNV;
-	}
+    private LocalDate ngaySinh;
 
-	public void setMaNV(String maNV) {
-		this.maNV = maNV;
-	}
+    private boolean gioiTinh;
 
-	public String getTenNV() {
-		return tenNV;
-	}
+    private String sDT;
 
-	public void setTenNV(String tenNV) {
-		this.tenNV = tenNV;
-	}
+    private String diaChi;
 
-	public Date getNgaySinh() {
-		return ngaySinh;
-	}
+    private String email;
 
-	public void setNgaySinh(Date ngaySinh) {
-		this.ngaySinh = ngaySinh;
-	}
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "taiKhoan_id")
+    private TaiKhoan taiKhoan;
 
-	public boolean isGioiTinh() {
-		return gioiTinh;
-	}
+    // Constructors
+    public NhanVien() {
+    }
 
-	public void setGioiTinh(boolean gioiTinh) {
-		this.gioiTinh = gioiTinh;
-	}
+    public NhanVien(String maNV, String tenNV, LocalDate ngaySinh, boolean gioiTinh, String sDT, String diaChi,
+                    String email, TaiKhoan taiKhoan) {
+        this.maNV = maNV;
+        this.tenNV = tenNV;
+        this.ngaySinh = ngaySinh;
+        this.gioiTinh = gioiTinh;
+        this.sDT = sDT;
+        this.diaChi = diaChi;
+        this.email = email;
+        this.taiKhoan = taiKhoan;
+    }
 
-	public String getsDT() {
-		return sDT;
-	}
+    // Getters and Setters
+    public String getMaNV() {
+        return maNV;
+    }
 
-	public void setsDT(String sDT) {
-		this.sDT = sDT;
-	}
+    public void setMaNV(String maNV) {
+        this.maNV = maNV;
+    }
 
-	public String getDiaChi() {
-		return diaChi;
-	}
+    public String getTenNV() {
+        return tenNV;
+    }
 
-	public void setDiaChi(String diaChi) {
-		this.diaChi = diaChi;
-	}
+    public void setTenNV(String tenNV) {
+        this.tenNV = tenNV;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public LocalDate getNgaySinh() {
+        return ngaySinh;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setNgaySinh(LocalDate ngaySinh) {
+        this.ngaySinh = ngaySinh;
+    }
 
-	public String getFormattedNgaySinh() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		return dateFormat.format(ngaySinh);
-	}
+    public boolean isGioiTinh() {
+        return gioiTinh;
+    }
 
-	@Override
-	public String toString() {
-		return "NhanVien [maNV=" + maNV + ", tenNV=" + tenNV + ", ngaySinh=" + getFormattedNgaySinh() + ", gioiTinh="
-				+ gioiTinh + ", sDT=" + sDT + ", diaChi=" + diaChi + ", email=" + email + "]";
-	}
+    public void setGioiTinh(boolean gioiTinh) {
+        this.gioiTinh = gioiTinh;
+    }
 
+    public String getsDT() {
+        return sDT;
+    }
+
+    public void setsDT(String sDT) {
+        this.sDT = sDT;
+    }
+
+    public String getDiaChi() {
+        return diaChi;
+    }
+
+    public void setDiaChi(String diaChi) {
+        this.diaChi = diaChi;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public TaiKhoan getTaiKhoan() {
+        return taiKhoan;
+    }
+
+    public void setTaiKhoan(TaiKhoan taiKhoan) {
+        this.taiKhoan = taiKhoan;
+    }
+
+    // Format ngày sinh thành chuỗi
+    public String getFormattedNgaySinh() {
+        return ngaySinh != null ? ngaySinh.toString() : "N/A";
+    }
+
+    @Override
+    public String toString() {
+        return "NhanVien{" +
+                "maNV='" + maNV + '\'' +
+                ", tenNV='" + tenNV + '\'' +
+                ", ngaySinh=" + getFormattedNgaySinh() +
+                ", gioiTinh=" + (gioiTinh ? "Nam" : "Nữ") +
+                ", sDT='" + sDT + '\'' +
+                ", diaChi='" + diaChi + '\'' +
+                ", email='" + email + '\'' +
+                ", taiKhoan=" + taiKhoan +
+                '}';
+    }
 }
