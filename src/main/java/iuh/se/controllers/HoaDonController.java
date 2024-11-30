@@ -35,12 +35,11 @@ public class HoaDonController {
     @Autowired
     private NhanVienService nhanVienService;
 
-    @Autowired
-    private QuanAoService quanAoService;  
+
+    private QuanAoService quanAoService;  // Inject QuanAoService
     
     @Autowired
     private ChiTietHoaDonService chiTietHoaDonService;
-
     @GetMapping
     public String showHoaDonPage(Model model) {
         List<KhachHang> khachHangs = khachHangService.getAllKhachHang();
@@ -124,5 +123,4 @@ public class HoaDonController {
         model.addAttribute("addedProducts", hoaDon.getItems());
         return "redirect:/hoadon/view/" + hoaDonId;
     }
- 
 }

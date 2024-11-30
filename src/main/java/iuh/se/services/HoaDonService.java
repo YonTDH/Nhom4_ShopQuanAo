@@ -1,5 +1,6 @@
 package iuh.se.services;
 
+import iuh.se.entities.ChiTietHoaDon;
 import iuh.se.entities.HoaDon;
 import iuh.se.entities.KhachHang;
 import iuh.se.entities.NhanVien;
@@ -44,4 +45,6 @@ public interface HoaDonService {
     
     // Tìm kiếm theo tên nhân viên
     List<HoaDon> findByTenNhanVien(String tenNV);
+    
+    List<ChiTietHoaDon> getChiTietHoaDonList(String maHD);
 }
