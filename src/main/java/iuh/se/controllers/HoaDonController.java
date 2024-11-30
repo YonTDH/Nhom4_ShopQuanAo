@@ -5,6 +5,7 @@ import iuh.se.entities.HoaDon;
 import iuh.se.entities.KhachHang;
 import iuh.se.entities.NhanVien;
 import iuh.se.entities.QuanAo;
+import iuh.se.services.ChiTietHoaDonService;
 import iuh.se.services.HoaDonService;
 import iuh.se.services.KhachHangService;
 import iuh.se.services.NhanVienService;
@@ -35,7 +36,9 @@ public class HoaDonController {
 
     @Autowired
     private QuanAoService quanAoService;  // Inject QuanAoService
-
+    
+    @Autowired
+    private ChiTietHoaDonService chiTietHoaDonService;
     @GetMapping
     public String showHoaDonPage(Model model) {
         List<KhachHang> khachHangs = khachHangService.getAllKhachHang();
@@ -77,5 +80,28 @@ public class HoaDonController {
         model.addAttribute("hoaDons", hoaDons);
         model.addAttribute("keyword", keyword);
         return "hoadon";
+    }
+    @PostMapping("/addproduct")
+    public String addProductToInvoice(@RequestParam String hoaDonId, @RequestParam String sanPhamId,
+                                       @RequestParam Integer soLuong, Model model) {
+        // Lấy hóa đơn hiện tại
+        HoaDon hoaDon = hoaDonService.getHoaDonById(hoaDonId).orElseThrow(() -> new RuntimeException("Hóa đơn không tồn tại!"));
+
+        // Lấy sản phẩm được chọn
+        QuanAo quanAo = quanAoService.getQuanAoId(sanPhamId);
+
+        // Tạo chi tiết hóa đơn
+        ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
+        chiTietHoaDon.setHoaDon(hoaDon);
+        chiTietHoaDon.setQuanAo(quanAo);
+        chiTietHoaDon.setSoLuong(soLuong);
+        chiTietHoaDon.setDonGia(quanAo.getDonGiaBan());
+
+        // Lưu chi tiết hóa đơn
+        chiTietHoaDonService.saveChiTietHoaDon(chiTietHoaDon);
+
+        // Cập nhật danh sách sản phẩm đã thêm
+        model.addAttribute("addedProducts", hoaDon.getItems());
+        return "redirect:/hoadon/view/" + hoaDonId;
     }
 }

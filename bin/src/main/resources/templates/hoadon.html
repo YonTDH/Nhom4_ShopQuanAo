@@ -48,12 +48,10 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<!-- Danh Sách Sản Phẩm -->
 			<div class="col-md-8">
 				<div class="table-responsive">
-				<form th:action="@{/hoadon/addproduct}" th:object="${hoaDon}"
-                            method="post">
 					<table class="table table-hover shadow-sm">
 						<thead class="table-primary">
 							<tr>
@@ -77,39 +75,8 @@
 						</tbody>
 
 					</table>
-					</form>
 				</div>
-<!-- Danh Sách Sản Phẩm Được Thêm -->
-				<div class="col-md-8 mt-4">
-				    <h4 class="text-center mb-3">Danh Sách Sản Phẩm Đã Thêm</h4>
-				    <div class="table-responsive">
-				        <table class="table table-hover shadow-sm">
-				            <thead class="table-success">
-				                <tr>
-				                    <th>Mã Quần Áo</th>
-				                    <th>Tên Quần Áo</th>
-				                    <th>Số Lượng</th>
-				                    <th>Đơn Giá</th>
-				                    <th>Thành Tiền</th>
-				                    <th>Thao Tác</th>
-				                </tr>
-				            </thead>
-				            <tbody>
-				                <!-- Hiển thị các sản phẩm đã thêm -->
-				                <tr th:each="addedProduct : ${addedProducts}">
-				                    <td th:text="${addedProduct.maQuanAo}"></td>
-				                    <td th:text="${addedProduct.tenQuanAo}"></td>
-				                    <td th:text="${addedProduct.soLuong}"></td>
-				                    <td th:text="${addedProduct.donGiaBan}"></td>
-				                    <td th:text="${addedProduct.soLuong * addedProduct.donGiaBan}"></td>
-				                    <td>
-				                        <button type="button" class="btn btn-danger">Xóa</button>
-				                    </td>
-				                </tr>
-				            </tbody>	
-				        </table>
-				    </div>
-				</div>
+
 				<!-- Tổng Tiền và Thanh Toán -->
 				<div class="row mt-4">
 					<div class="col-md-6 offset-md-6">

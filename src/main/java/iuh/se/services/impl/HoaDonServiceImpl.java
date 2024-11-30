@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import iuh.se.entities.ChiTietHoaDon;
 import iuh.se.entities.HoaDon;
 import iuh.se.entities.KhachHang;
 import iuh.se.entities.NhanVien;
@@ -94,5 +95,16 @@ public class HoaDonServiceImpl implements HoaDonService {
     @Override
     public List<HoaDon> findByTenNhanVien(String tenNV) {
         return hoaDonRepository.findByTenNhanVien(tenNV);
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<ChiTietHoaDon> getChiTietHoaDonList(String maHD) {
+        // Tìm hóa đơn theo mã
+        HoaDon hoaDon = hoaDonRepository.findById(maHD)
+                .orElseThrow(() -> new RuntimeException("Hóa đơn không tồn tại: " + maHD));
+
+        // Trả về danh sách chi tiết hóa đơn
+        return hoaDon.getItems();
     }
 }
