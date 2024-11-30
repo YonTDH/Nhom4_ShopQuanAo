@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface HoaDonService {
 	
     List<HoaDon> getAllHoaDon();
-    Optional<HoaDon> getHoaDonById(String id);
+    HoaDon getHoaDonById(String id);
     HoaDon saveHoaDon(HoaDon hoaDon);
     void deleteHoaDon(String id);
     

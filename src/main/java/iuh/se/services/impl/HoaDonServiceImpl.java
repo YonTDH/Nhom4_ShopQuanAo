@@ -28,8 +28,8 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-    public Optional<HoaDon> getHoaDonById(String id) {
-        return hoaDonRepository.findById(id);
+    public HoaDon getHoaDonById(String id) {
+		return hoaDonRepository.findById(id).orElseThrow(() -> new RuntimeException("Hóa đơn không tồn tại: " + id));
     }
 
     @Override

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -35,7 +36,7 @@ public class HoaDonController {
     @Autowired
     private NhanVienService nhanVienService;
 
-
+    @Autowired
     private QuanAoService quanAoService;  // Inject QuanAoService
     
     @Autowired
@@ -64,21 +65,12 @@ public class HoaDonController {
         model.addAttribute("hoaDons", hoaDons);
         return "hoadon/list"; // This should match the path to your list.html file
     }
+    
+    @GetMapping("/success")
+    public String showSuccessPage(Model model) {
+        return "hoadon/success";  
+    }
 
-//    @PostMapping("/create")
-//    public String createHoaDon(HoaDon hoaDon, Model model) {
-//        hoaDon.setNgayLapHD(LocalDate.now());
-//
-//        hoaDonService.saveHoaDon(hoaDon);
-//
-//		for (ChiTietHoaDon product : hoaDon.getItems()) {
-//			quanAoService.updateSoLuong(product.getQuanAo().getMaQuanAo()); 
-//		}
-//
-//        model.addAttribute("hoaDons", hoaDonService.getAllHoaDon());
-//
-//        return "redirect:/hoadon";
-//    }
 
     @GetMapping("/search")
     public String searchHoaDon(@RequestParam("keyword") String keyword, Model model) {
@@ -87,40 +79,49 @@ public class HoaDonController {
         model.addAttribute("hoaDons", hoaDons);
         model.addAttribute("keyword", keyword);
         return "hoadon";
-    }
-    @PostMapping("/addproduct")
-    public String addProductToInvoice(@RequestParam(required = false) String hoaDonId, 
-                                       @RequestParam String sanPhamId,
-                                       @RequestParam Integer soLuong, Model model) {
-        HoaDon hoaDon;
-
-        // Nếu không có `hoaDonId`, tạo mới hóa đơn
-        if (hoaDonId == null || hoaDonId.isEmpty()) {
-            hoaDon = new HoaDon();
-            hoaDon.setMaHD(UUID.randomUUID().toString()); // Gán ID thủ công
-            hoaDon.setNgayLapHD(LocalDate.now());
-            hoaDon = hoaDonService.saveHoaDon(hoaDon);
-            hoaDonId = hoaDon.getMaHD();
-        } else {
-            hoaDon = hoaDonService.getHoaDonById(hoaDonId)
-                       .orElseThrow(() -> new RuntimeException("Hóa đơn không tồn tại!"));
         }
+    
+    @PostMapping("/addproduct")
+    public List<ChiTietHoaDon> addProductToInvoice(@RequestParam("hoaDonId") String hoaDonId,
+                                                   @RequestParam("sanPhamId") String sanPhamId,
+                                                   @RequestParam("soLuong") int soLuong) {
 
-        // Lấy sản phẩm được chọn
+        // Lấy hóa đơn và sản phẩm từ database
+        HoaDon hoaDon = hoaDonService.getHoaDonById(hoaDonId);
         QuanAo quanAo = quanAoService.getQuanAoId(sanPhamId);
 
-        // Tạo chi tiết hóa đơn
+        // Kiểm tra nếu hóa đơn hoặc sản phẩm không tồn tại
+        if (hoaDon == null || quanAo == null) {
+            throw new IllegalArgumentException("Hóa đơn hoặc sản phẩm không tồn tại");
+        }
+
+        // Kiểm tra số lượng sản phẩm có hợp lệ không
+        if (soLuong > quanAo.getSoLuong()) {
+            throw new IllegalArgumentException("Số lượng sản phẩm vượt quá tồn kho");
+        }
+
+        // Tạo chi tiết hóa đơn mới
         ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
         chiTietHoaDon.setHoaDon(hoaDon);
         chiTietHoaDon.setQuanAo(quanAo);
         chiTietHoaDon.setSoLuong(soLuong);
-        chiTietHoaDon.setDonGia(quanAo.getDonGiaBan());
+        chiTietHoaDon.setDonGia(quanAo.getDonGiaBan());  // Đơn giá sản phẩm
 
-        // Lưu chi tiết hóa đơn
-        chiTietHoaDonService.saveChiTietHoaDon(chiTietHoaDon);
+        // Thêm chi tiết hóa đơn vào hóa đơn
+        hoaDon.getItems().add(chiTietHoaDon);
 
-        // Cập nhật danh sách sản phẩm đã thêm
-        model.addAttribute("addedProducts", hoaDon.getItems());
-        return "redirect:/hoadon/view/" + hoaDonId;
+        // Cập nhật số lượng sản phẩm trong kho
+        quanAoService.updateSoLuong(sanPhamId);
+
+        // Cập nhật tổng tiền của hóa đơn
+        hoaDon.setTongTien(hoaDon.getItems().stream().mapToDouble(item -> item.getDonGia() * item.getSoLuong()).sum());
+
+        // Lưu hóa đơn sau khi cập nhật
+        hoaDonService.saveHoaDon(hoaDon);
+
+        // Trả về danh sách chi tiết hóa đơn
+        return hoaDon.getItems();
     }
+
+
 }
