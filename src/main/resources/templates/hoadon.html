@@ -37,8 +37,7 @@
 								</select>
 							</div>
 							<div class="mb-3">
-								<label class="form-label">Ngày Lập:</label> 
-								<input type="date"
+								<label class="form-label">Ngày Lập:</label> <input type="date"
 									th:value="${hoaDon.ngayLapHD != null ? hoaDon.ngayLapHD.toString() : ''}"
 									class="form-control" readonly>
 
@@ -60,19 +59,19 @@
 								<th>Tên Quần Áo</th>
 								<th>Số Lượng</th>
 								<th>Đơn Giá</th>
-								<th>Thành Tiền</th>
+								<!-- <th>Thành Tiền</th> -->
 								<th>Thao Tác</th>
 							</tr>
 						</thead>
 						<tbody>
-							<!--  <tr th:each="product : ${products}">
+							<tr th:each="product : ${products}">
 								<td th:text="${product.maQuanAo}"></td>
 								<td th:text="${product.tenQuanAo}"></td>
-								<td th:text =${product.soluong}></td>
-								<td th:text="${product.donGia}"></td>
-								<td th:text="${product.donGia * 1}"></td>
-								<td><button type="button" class="btn btn-danger">Xóa</button></td>
-							</tr>-->
+								<td th:text="${product.soLuong}"></td>
+								<td th:text="${product.donGiaBan}"></td>
+								<td><button type="button" class="btn btn-primary">Thêm</button></td>
+
+							</tr>
 						</tbody>
 
 					</table>

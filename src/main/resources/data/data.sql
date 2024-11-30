@@ -58,3 +58,8 @@ INSERT INTO `quan_ao` (`dongiaban`, `soluong`, `maquanao`, `machatlieu`, `makich
 	(250, 100, 'QA001', 'CL01', 'S', 'KM001', 'LQ01', 'MS01', 'NCC01', 'TH01', 'Jeans A', 'jeans_a.jpg'),
 	(150, 200, 'QA002', 'CL02', 'M', 'KM002', 'LQ02', 'MS02', 'NCC02', 'TH02', 'T-shirt B', 'tshirt_b.jpg'),
 	(350, 50, 'QA003', 'CL03', 'L', 'KM003', 'LQ03', 'MS03', 'NCC03', 'TH03', 'Jacket C', 'jacket_c.jpg');
+
+INSERT INTO `employee`.`chitiethoadon` (`macthd`, `don_gia`, `so_luong`, `mahd`, `ma_quan_ao`) VALUES 
+	('CTHD2', 1000, 10, 'HD001', 'QA001'),
+	('CTHD3', 1000, 10, 'HD003', 'QA003'),
+	('CTHD1', 1000, 10, 'HD002', 'QA002');
