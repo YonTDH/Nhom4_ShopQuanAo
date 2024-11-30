@@ -1,66 +1,101 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Lập Hóa Đơn</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<title>Lập Hóa Đơn</title>
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+	rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-4">
-        <h2 class="text-center mb-4">Lập Hóa Đơn</h2>
-        <div class="row">
-            <!-- Form Tạo Hóa Đơn -->
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Thông Tin Hóa Đơn</h5>
-                        <form th:action="@{/hoadon/create}" th:object="${hoaDon}" method="post">
-                            <div class="mb-3">
-                                <label class="form-label">Nhân Viên:</label>
-                                <input type="text" th:field="*{nhanVien.tenNV}" class="form-control" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Khách Hàng:</label>
-                                <select th:field="*{khachHang.maKH}" class="form-control">
-                                    <option value="">Chọn khách hàng</option>
-                                    <option th:each="khachHang : ${khachHangs}" 
-                                            th:value="${khachHang.maKH}" 
-                                            th:text="${khachHang.tenKH}">
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Ngày Lập:</label>
-                                <input type="date" th:field="*{ngayLapHD}" class="form-control" readonly>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Lập Hóa Đơn</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- Danh Sách Sản Phẩm -->
-            <div class="col-md-8">
-                <div class="table-responsive">
-                    <table class="table table-hover shadow-sm">
-                        <thead class="table-primary">
-                            <tr>
-                                <th>Mã Quần Áo</th>
-                                <th>Tên Quần Áo</th>
-                                <th>Số Lượng</th>
-                                <th>Đơn Giá</th>
-                                <th>Thành Tiền</th>
-                                <th>Thao Tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Bảng chi tiết sản phẩm sẽ được thêm sau -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="container mt-4">
+		<h2 class="text-center mb-4">Lập Hóa Đơn</h2>
+		<div class="row">
+			<!-- Form Tạo Hóa Đơn -->
+			<div class="col-md-4">
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title text-center">Thông Tin Hóa Đơn</h5>
+						<form th:action="@{/hoadon/create}" th:object="${hoaDon}"
+							method="post">
+							<div class="mb-3">
+								<label class="form-label">Nhân Viên:</label> <select
+									th:field="*{nhanVien.maNV}" class="form-control">
+									<option value="">Chọn Nhân Viên</option>
+									<option th:each="nhanVien : ${nhanViens}"
+										th:value="${nhanVien.maNV}" th:text="${nhanVien.tenNV}">
+									</option>
+								</select>
+							</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+							<div class="mb-3">
+								<label class="form-label">Khách Hàng:</label> <select
+									th:field="*{khachHang.maKH}" class="form-control">
+									<option value="">Chọn khách hàng</option>
+									<option th:each="khachHang : ${khachHangs}"
+										th:value="${khachHang.maKH}" th:text="${khachHang.tenKH}">
+									</option>
+								</select>
+							</div>
+							<div class="mb-3">
+								<label class="form-label">Ngày Lập:</label> 
+								<input type="date"
+									th:value="${hoaDon.ngayLapHD != null ? hoaDon.ngayLapHD.toString() : ''}"
+									class="form-control" readonly>
+
+							</div>
+							<button type="submit" class="btn btn-primary w-100">Lập
+								Hóa Đơn</button>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<!-- Danh Sách Sản Phẩm -->
+			<div class="col-md-8">
+				<div class="table-responsive">
+					<table class="table table-hover shadow-sm">
+						<thead class="table-primary">
+							<tr>
+								<th>Mã Quần Áo</th>
+								<th>Tên Quần Áo</th>
+								<th>Số Lượng</th>
+								<th>Đơn Giá</th>
+								<th>Thành Tiền</th>
+								<th>Thao Tác</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!--  <tr th:each="product : ${products}">
+								<td th:text="${product.maQuanAo}"></td>
+								<td th:text="${product.tenQuanAo}"></td>
+								<td th:text =${product.soluong}></td>
+								<td th:text="${product.donGia}"></td>
+								<td th:text="${product.donGia * 1}"></td>
+								<td><button type="button" class="btn btn-danger">Xóa</button></td>
+							</tr>-->
+						</tbody>
+
+					</table>
+				</div>
+
+				<!-- Tổng Tiền và Thanh Toán -->
+				<div class="row mt-4">
+					<div class="col-md-6 offset-md-6">
+						<div class="d-flex justify-content-between">
+							<h5>Tổng Tiền:</h5>
+							<h5>
+								<span id="totalAmount">300,000</span> VND
+							</h5>
+						</div>
+						<button class="btn btn-success w-100">Thanh Toán</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Bootstrap JS -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
