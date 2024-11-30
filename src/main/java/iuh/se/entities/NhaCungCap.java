@@ -29,11 +29,9 @@ public class NhaCungCap {
 	
 	public NhaCungCap() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public NhaCungCap( String tenNCC, String soDienThoai, String diaChi, String email) {
 		super();
-//		this.maNCC = auto_ID();
 		this.tenNCC = tenNCC;
 		this.soDienThoai = soDienThoai;
 		this.diaChi = diaChi;

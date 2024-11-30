@@ -13,7 +13,6 @@ import jakarta.persistence.Id;
 public class KhachHang {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "maKH", nullable = false, unique = true)
     private String maKH;
 

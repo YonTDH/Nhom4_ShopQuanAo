@@ -1,52 +1,56 @@
 package iuh.se.entities;
 
-import java.time.LocalDate;
+import java.util.Date;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "NhanVien")
 public class NhanVien {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MaNV", columnDefinition = "nvarchar(50)")
     private String maNV;
 
+    @Column(name = "TenNV", columnDefinition = "nvarchar(255)")
     private String tenNV;
 
-    private LocalDate ngaySinh;
-
-    private boolean gioiTinh;
-
+    @Column(name = "SDT", columnDefinition = "nvarchar(15)")
     private String sDT;
 
+    @Column(name = "DiaChi", columnDefinition = "nvarchar(255)")
     private String diaChi;
 
+    @Column(name = "Email", columnDefinition = "nvarchar(255)")
     private String email;
+
+    @Column(name = "NgaySinh")
+    private Date ngaySinh;
+
+    @Column(name = "GioiTinh")
+    private Boolean gioiTinh;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "taiKhoan_id")
     private TaiKhoan taiKhoan;
-
     // Constructors
     public NhanVien() {
     }
 
-    public NhanVien(String maNV, String tenNV, LocalDate ngaySinh, boolean gioiTinh, String sDT, String diaChi,
-                    String email, TaiKhoan taiKhoan) {
+    public NhanVien(String maNV, String tenNV, String sDT, String diaChi, String email, Date ngaySinh, Boolean gioiTinh) {
         this.maNV = maNV;
         this.tenNV = tenNV;
-        this.ngaySinh = ngaySinh;
-        this.gioiTinh = gioiTinh;
         this.sDT = sDT;
         this.diaChi = diaChi;
         this.email = email;
-        this.taiKhoan = taiKhoan;
+        this.ngaySinh = ngaySinh;
+        this.gioiTinh = gioiTinh;
     }
 
     // Getters and Setters
@@ -64,22 +68,6 @@ public class NhanVien {
 
     public void setTenNV(String tenNV) {
         this.tenNV = tenNV;
-    }
-
-    public LocalDate getNgaySinh() {
-        return ngaySinh;
-    }
-
-    public void setNgaySinh(LocalDate ngaySinh) {
-        this.ngaySinh = ngaySinh;
-    }
-
-    public boolean isGioiTinh() {
-        return gioiTinh;
-    }
-
-    public void setGioiTinh(boolean gioiTinh) {
-        this.gioiTinh = gioiTinh;
     }
 
     public String getsDT() {
@@ -106,30 +94,25 @@ public class NhanVien {
         this.email = email;
     }
 
-    public TaiKhoan getTaiKhoan() {
-        return taiKhoan;
+    public Date getNgaySinh() {
+        return ngaySinh;
     }
 
-    public void setTaiKhoan(TaiKhoan taiKhoan) {
-        this.taiKhoan = taiKhoan;
+    public void setNgaySinh(Date ngaySinh) {
+        this.ngaySinh = ngaySinh;
     }
 
-    // Format ngày sinh thành chuỗi
-    public String getFormattedNgaySinh() {
-        return ngaySinh != null ? ngaySinh.toString() : "N/A";
+    public Boolean getGioiTinh() {
+        return gioiTinh;
+    }
+
+    public void setGioiTinh(Boolean gioiTinh) {
+        this.gioiTinh = gioiTinh;
     }
 
     @Override
     public String toString() {
-        return "NhanVien{" +
-                "maNV='" + maNV + '\'' +
-                ", tenNV='" + tenNV + '\'' +
-                ", ngaySinh=" + getFormattedNgaySinh() +
-                ", gioiTinh=" + (gioiTinh ? "Nam" : "Nữ") +
-                ", sDT='" + sDT + '\'' +
-                ", diaChi='" + diaChi + '\'' +
-                ", email='" + email + '\'' +
-                ", taiKhoan=" + taiKhoan +
-                '}';
+        return "NhanVien [maNV=" + maNV + ", tenNV=" + tenNV + ", sDT=" + sDT + ", diaChi=" + diaChi + ", email=" + email
+                + ", ngaySinh=" + ngaySinh + ", gioiTinh=" + gioiTinh + "]";
     }
 }

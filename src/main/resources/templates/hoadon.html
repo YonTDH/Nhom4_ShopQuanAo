@@ -7,7 +7,6 @@
 <body>
     <div class="container mt-4">
         <h2 class="text-center mb-4">Lập Hóa Đơn</h2>
-        
         <div class="row">
             <!-- Form Tạo Hóa Đơn -->
             <div class="col-md-4">
@@ -23,7 +22,8 @@
                                 <label class="form-label">Khách Hàng:</label>
                                 <select th:field="*{khachHang.maKhachHang}" class="form-control">
                                     <option value="">Chọn khách hàng</option>
-                                    <!-- Options khách hàng sẽ được thêm ở đây -->
+                                    <!-- Lặp qua danh sách khách hàng từ model -->
+                                    <option th:each="khachHang : ${khachHangs}" th:value="${khachHang.maKhachHang}" th:text="${khachHang.tenKH}"></option>
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -35,7 +35,6 @@
                     </div>
                 </div>
             </div>
-            
             <!-- Danh Sách Sản Phẩm -->
             <div class="col-md-8">
                 <div class="table-responsive">

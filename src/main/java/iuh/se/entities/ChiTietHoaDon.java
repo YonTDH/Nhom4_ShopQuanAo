@@ -2,32 +2,31 @@ package iuh.se.entities;
 
 
 public class ChiTietHoaDon {
-	private HoaDon e_HoaDon;
-	private QuanAo e_QuanAo;
+	private HoaDon hoaDon;
+	private QuanAo quanAo;
 	private int soLuong;
 	private double donGia;
 	public ChiTietHoaDon() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public ChiTietHoaDon(HoaDon e_HoaDon, QuanAo e_QuanAo, int soLuong, double donGia) {
 		super();
-		this.e_HoaDon = e_HoaDon;
-		this.e_QuanAo = e_QuanAo;
+		this.hoaDon = e_HoaDon;
+		this.quanAo = e_QuanAo;
 		this.soLuong = soLuong;
 		this.donGia = donGia;
 	}
 	public HoaDon getHoaDon() {
-		return e_HoaDon;
+		return hoaDon;
 	}
 	public void setHoaDon(HoaDon e_HoaDon) {
-		this.e_HoaDon = e_HoaDon;
+		this.hoaDon = e_HoaDon;
 	}
 	public QuanAo getQuanAo() {
-		return e_QuanAo;
+		return quanAo;
 	}
 	public void setQuanAo(QuanAo e_QuanAo) {
-		this.e_QuanAo = e_QuanAo;
+		this.quanAo = e_QuanAo;
 	}
 	public int getSoLuong() {
 		return soLuong;
@@ -43,7 +42,7 @@ public class ChiTietHoaDon {
 	}
 	@Override
 	public String toString() {
-		return "ChiTietHoaDon [hoaDon=" + e_HoaDon + ", quanAo=" + e_QuanAo + ", soLuong=" + soLuong + ", donGia=" + donGia
+		return "ChiTietHoaDon [hoaDon=" + hoaDon + ", quanAo=" + quanAo + ", soLuong=" + soLuong + ", donGia=" + donGia
 				+ "]";
 	}
 	

@@ -1,10 +1,9 @@
+
 package iuh.se.entities;
 
 import java.time.LocalDate;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,16 +13,15 @@ import jakarta.persistence.ManyToOne;
 public class HoaDon {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String maHD;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "khachHang_id", nullable = false)
-    private KhachHang e_KhachHang;
+    @JoinColumn(name = "maKH", nullable = false)
+    private KhachHang khachHang;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "nhanVien_id", nullable = false)
-    private NhanVien e_NhanVien;
+    @JoinColumn(name = "maNV", nullable = false)
+    private NhanVien nhanVien;
 
     private LocalDate ngayLapHD;
 
@@ -32,15 +30,15 @@ public class HoaDon {
     }
 
     public HoaDon(KhachHang e_KhachHang, NhanVien e_NhanVien, LocalDate ngayLapHD) {
-        this.e_KhachHang = e_KhachHang;
-        this.e_NhanVien = e_NhanVien;
+        this.khachHang = e_KhachHang;
+        this.nhanVien = e_NhanVien;
         this.ngayLapHD = ngayLapHD;
     }
 
     public HoaDon(String maHD, KhachHang e_KhachHang, NhanVien e_NhanVien, LocalDate ngayLapHD) {
         this.maHD = maHD;
-        this.e_KhachHang = e_KhachHang;
-        this.e_NhanVien = e_NhanVien;
+        this.khachHang = e_KhachHang;
+        this.nhanVien = e_NhanVien;
         this.ngayLapHD = ngayLapHD;
     }
 
@@ -54,19 +52,19 @@ public class HoaDon {
     }
 
     public KhachHang getKhachHang() {
-        return e_KhachHang;
+        return khachHang;
     }
 
     public void setKhachHang(KhachHang e_KhachHang) {
-        this.e_KhachHang = e_KhachHang;
+        this.khachHang = e_KhachHang;
     }
 
     public NhanVien getNhanVien() {
-        return e_NhanVien;
+        return nhanVien;
     }
 
     public void setNhanVien(NhanVien e_NhanVien) {
-        this.e_NhanVien = e_NhanVien;
+        this.nhanVien = e_NhanVien;
     }
 
     public LocalDate getNgayLapHD() {
@@ -81,8 +79,8 @@ public class HoaDon {
     public String toString() {
         return "HoaDon{" +
                 "maHD='" + maHD + '\'' +
-                ", e_KhachHang=" + e_KhachHang +
-                ", e_NhanVien=" + e_NhanVien +
+                ", e_KhachHang=" + khachHang +
+                ", e_NhanVien=" + nhanVien +
                 ", ngayLapHD=" + ngayLapHD +
                 '}';
     }

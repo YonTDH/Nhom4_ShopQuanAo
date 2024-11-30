@@ -18,13 +18,6 @@ public class KichCo {
 
 	public KichCo() {
 	}
-//private String auto_ID(){
-//    DAO_KichCo kichCo_DAO = new DAO_KichCo();
-//    String idPrefix = "KC";
-//   int length = kichCo_DAO.getAllKichCo().size();
-//   String finalId = idPrefix + String.format("%06d", length + 1);
-//   return finalId;
-//}
 
 	public KichCo(String kichCo) {
 		super();
