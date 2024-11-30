@@ -30,8 +30,10 @@ public class HoaDon {
     private LocalDate ngayLapHD;
     @OneToMany(mappedBy = "hoaDon", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChiTietHoaDon> items; 
-    // Constructors
+   
+    private double tongTien;
     
+    // Constructors
     public HoaDon() {
     }
 
@@ -53,7 +55,15 @@ public class HoaDon {
         return maHD;
     }
     
-    public List<ChiTietHoaDon> getItems() {
+    public double getTongTien() {
+		return tongTien;
+	}
+
+	public void setTongTien(double tongTien) {
+		this.tongTien = tongTien;
+	}
+
+	public List<ChiTietHoaDon> getItems() {
 		return items;
 	}
 

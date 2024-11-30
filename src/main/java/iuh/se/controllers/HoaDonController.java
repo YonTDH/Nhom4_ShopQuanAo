@@ -5,6 +5,7 @@ import iuh.se.entities.HoaDon;
 import iuh.se.entities.KhachHang;
 import iuh.se.entities.NhanVien;
 import iuh.se.entities.QuanAo;
+import iuh.se.services.ChiTietHoaDonService;
 import iuh.se.services.HoaDonService;
 import iuh.se.services.KhachHangService;
 import iuh.se.services.NhanVienService;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 @Controller
 @RequestMapping("/hoadon")
 public class HoaDonController {
@@ -34,7 +36,10 @@ public class HoaDonController {
     private NhanVienService nhanVienService;
 
     @Autowired
-    private QuanAoService quanAoService;  // Inject QuanAoService
+    private QuanAoService quanAoService;  
+    
+    @Autowired
+    private ChiTietHoaDonService chiTietHoaDonService;
 
     @GetMapping
     public String showHoaDonPage(Model model) {
@@ -54,21 +59,27 @@ public class HoaDonController {
         return "hoadon";
     }
 
-
-    @PostMapping("/create")
-    public String createHoaDon(HoaDon hoaDon, Model model) {
-        hoaDon.setNgayLapHD(LocalDate.now());
-
-        hoaDonService.saveHoaDon(hoaDon);
-
-		for (ChiTietHoaDon product : hoaDon.getItems()) {
-			quanAoService.updateSoLuong(product.getQuanAo().getMaQuanAo()); 
-		}
-
-        model.addAttribute("hoaDons", hoaDonService.getAllHoaDon());
-
-        return "redirect:/hoadon";
+    @GetMapping("/list")
+    public String showHoaDonList(Model model) {
+        List<HoaDon> hoaDons = hoaDonService.getAllHoaDon();
+        model.addAttribute("hoaDons", hoaDons);
+        return "hoadon/list"; // This should match the path to your list.html file
     }
+
+//    @PostMapping("/create")
+//    public String createHoaDon(HoaDon hoaDon, Model model) {
+//        hoaDon.setNgayLapHD(LocalDate.now());
+//
+//        hoaDonService.saveHoaDon(hoaDon);
+//
+//		for (ChiTietHoaDon product : hoaDon.getItems()) {
+//			quanAoService.updateSoLuong(product.getQuanAo().getMaQuanAo()); 
+//		}
+//
+//        model.addAttribute("hoaDons", hoaDonService.getAllHoaDon());
+//
+//        return "redirect:/hoadon";
+//    }
 
     @GetMapping("/search")
     public String searchHoaDon(@RequestParam("keyword") String keyword, Model model) {
@@ -78,4 +89,40 @@ public class HoaDonController {
         model.addAttribute("keyword", keyword);
         return "hoadon";
     }
+    @PostMapping("/addproduct")
+    public String addProductToInvoice(@RequestParam(required = false) String hoaDonId, 
+                                       @RequestParam String sanPhamId,
+                                       @RequestParam Integer soLuong, Model model) {
+        HoaDon hoaDon;
+
+        // Nếu không có `hoaDonId`, tạo mới hóa đơn
+        if (hoaDonId == null || hoaDonId.isEmpty()) {
+            hoaDon = new HoaDon();
+            hoaDon.setMaHD(UUID.randomUUID().toString()); // Gán ID thủ công
+            hoaDon.setNgayLapHD(LocalDate.now());
+            hoaDon = hoaDonService.saveHoaDon(hoaDon);
+            hoaDonId = hoaDon.getMaHD();
+        } else {
+            hoaDon = hoaDonService.getHoaDonById(hoaDonId)
+                       .orElseThrow(() -> new RuntimeException("Hóa đơn không tồn tại!"));
+        }
+
+        // Lấy sản phẩm được chọn
+        QuanAo quanAo = quanAoService.getQuanAoId(sanPhamId);
+
+        // Tạo chi tiết hóa đơn
+        ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon();
+        chiTietHoaDon.setHoaDon(hoaDon);
+        chiTietHoaDon.setQuanAo(quanAo);
+        chiTietHoaDon.setSoLuong(soLuong);
+        chiTietHoaDon.setDonGia(quanAo.getDonGiaBan());
+
+        // Lưu chi tiết hóa đơn
+        chiTietHoaDonService.saveChiTietHoaDon(chiTietHoaDon);
+
+        // Cập nhật danh sách sản phẩm đã thêm
+        model.addAttribute("addedProducts", hoaDon.getItems());
+        return "redirect:/hoadon/view/" + hoaDonId;
+    }
+ 
 }
